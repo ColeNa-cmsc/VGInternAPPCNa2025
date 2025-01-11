@@ -1,5 +1,13 @@
+/*
+Cole Na
+cna1@umbc.edu
+1/10/25
+Description: code for ValueGlance intern assignment. It takes data from an API, gives sorting and filtering options,
+and displays the API data.
+*/
+
 import React, { useState, useEffect} from "react"
-import logo from './logo.svg'
+
 import './App.css'
 
 
@@ -10,15 +18,13 @@ function App() {
   const [dataShown, setDataShown] = useState([])
 
   const [filter, setFilter] = useState(0) //0:no filter 1:date, 2:revenue, 3:net income
-  const [activeFilter, setActiveFilter] = useState(false)
   const [filterMin, setFilterMin] = useState(0)
   const [filterMax, setFilterMax] = useState(0)
 
   const [sort, setSort] = useState(0) //0:no filter 1:date, 2:revenue, 3:net income
-  const [activeSort, setActiveSort] = useState(false)
-  const [sortOrder, setSortOrder] = useState(0)
+  const [sortOrder, setSortOrder] = useState(0) //'increasing' or 'decreasing' 0 when not sorting
 
-  //after clicking sort or filter, this will be ran and change what is displayed
+  //after clicking filter, this will be ran and change what is displayed
   const updateGraphDisplayFilter = () => {
     let updatedData = []
 
@@ -40,6 +46,8 @@ function App() {
     }
     setDataShown(updatedData)
   }
+
+  //after clicking filter, this will be ran and change what is displayed
   const updateGraphDisplaySort = () => {
     let updatedData = []
     if(filter === 0){
@@ -71,6 +79,7 @@ function App() {
     setDataShown(updatedData)
   }
 
+  //clears filter but if sorting it keeps the sort
   const clearFilter = () => {
     let updatedData = [...originalData]
     setFilter(0)
@@ -104,6 +113,7 @@ function App() {
     }
   }
 
+  //clears sort but if filtering it keeps the filter
   const clearSort = () => {
     let updatedData = [...originalData]
     setSort(0)
@@ -125,6 +135,7 @@ function App() {
     }
   }
 
+  //retrieve data from API
   useEffect(() => {
     fetch(APIurl)
     .then(res => res.json())
@@ -133,7 +144,7 @@ function App() {
     }, [])
   })
 
-  //------------------------------------------------------
+  //------------------------------------------------------Testing code
   /*
   useEffect(() => {
   let array = [{"date": "2022-09-24", "revenuefromcontractwithcustomerexcludingassessedtax": 516199000000, "grossprofit": 170782000000, "operatingincomeloss": 119437000000, "netincomeloss": 616199000000, "earningspersharebasic": 6.15,"earningspersharediluted": 6.11}, 
@@ -151,9 +162,9 @@ function App() {
     return (
       <div className="App bg-gray-900 min-h-screen p-6">
       <header className="bg-gray-900 shadow-md rounded-lg p-6 max-w-4xl mx-auto">
-        {/* Filters */}
+
+        {/* Filter Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-  {/* Filter Section */}
   <div className="p-6 bg-gray-700 shadow-md rounded-md">
     <h2 className="text-2xl font-semibold mb-4 text-gray-100">Filter Functions</h2>
     <div className="space-y-2">
@@ -308,6 +319,7 @@ function App() {
 </div>
 </div>
 
+{/*graph*/}
 <div className="overflow-x-auto mt-6">
   <table className="min-w-full bg-gray-800 text-gray-100 rounded-lg">
     <thead className="bg-gray-700 text-sm uppercase font-semibold">
